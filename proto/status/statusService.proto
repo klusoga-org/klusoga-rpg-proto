@@ -1,0 +1,13 @@
+syntax = "proto3";
+package statusService;
+option go_package = "github.com/klusoga-org/klusoga-rpg-proto/proto/status";
+
+import "google/protobuf/empty.proto";
+
+message StatusResponse{
+  string Status = 1;
+}
+
+service StatusService{
+  rpc GetStatus (google.protobuf.Empty) returns (StatusResponse);
+}
