@@ -1,0 +1,32 @@
+syntax = "proto3";
+package entityService;
+option go_package = "github.com/klusoga-org/klusoga-rpg-proto/proto/entity";
+
+import "google/protobuf/timestamp.proto";
+
+message Player{
+  string Id = 1;
+  string Name = 2;
+  uint32 Level = 3;
+  uint32 Exp = 4;
+  uint64 Coins = 5;
+  float AttackDamage = 6;
+  float Defense = 7;
+  google.protobuf.Timestamp CreatedAt = 8;
+  google.protobuf.Timestamp EditedAt = 9;
+  uint64 TotalKills = 10;
+}
+
+message CreatePlayerRequest{
+  string Id = 1;
+  string Name = 2;
+  uint32 Level = 3;
+  uint32 Exp = 4;
+  uint64 Coins = 5;
+  float AttackDamage = 6;
+  float Defense = 7;
+}
+
+service PlayerService{
+  rpc CreatePlayer (CreatePlayerRequest) returns (Player);
+}
