@@ -6,6 +6,8 @@ import "google/protobuf/empty.proto";
 
 message StatusResponse{
   string Status = 1;
+  string Version = 2;
+  string ServiceName = 3;
 }
 
 service StatusService{
