@@ -2,6 +2,8 @@ syntax = "proto3";
 package entityService;
 option go_package = "github.com/klusoga-org/klusoga-rpg-proto/proto/entity";
 
+import "google/protobuf/empty.proto";
+
 message Player{
   string Id = 1;
   string Name = 2;
@@ -25,6 +27,16 @@ message CreatePlayerRequest{
   float Defense = 7;
 }
 
+message GetPlayersRequest{
+  repeated Player Players = 1;
+}
+
+message GetPlayerRequest{
+  string Id = 1;
+}
+
 service PlayerService{
   rpc CreatePlayer (CreatePlayerRequest) returns (Player);
+  rpc GetPlayers (google.protobuf.Empty) returns (GetPlayersRequest);
+  rpc GetPlayer (GetPlayerRequest) returns (Player);
 }
