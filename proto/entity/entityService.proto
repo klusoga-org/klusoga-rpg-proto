@@ -27,7 +27,7 @@ message CreatePlayerRequest{
   float Defense = 7;
 }
 
-message GetPlayersRequest{
+message GetPlayersResponse{
   repeated Player Players = 1;
 }
 
@@ -37,6 +37,6 @@ message GetPlayerRequest{
 
 service PlayerService{
   rpc CreatePlayer (CreatePlayerRequest) returns (Player);
-  rpc GetPlayers (google.protobuf.Empty) returns (GetPlayersRequest);
+  rpc GetPlayers (google.protobuf.Empty) returns (GetPlayersResponse);
   rpc GetPlayer (GetPlayerRequest) returns (Player);
 }

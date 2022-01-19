@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PlayerServiceClient interface {
 	CreatePlayer(ctx context.Context, in *CreatePlayerRequest, opts ...grpc.CallOption) (*Player, error)
-	GetPlayers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPlayersRequest, error)
+	GetPlayers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPlayersResponse, error)
 	GetPlayer(ctx context.Context, in *GetPlayerRequest, opts ...grpc.CallOption) (*Player, error)
 }
 
@@ -45,8 +45,8 @@ func (c *playerServiceClient) CreatePlayer(ctx context.Context, in *CreatePlayer
 	return out, nil
 }
 
-func (c *playerServiceClient) GetPlayers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPlayersRequest, error) {
-	out := new(GetPlayersRequest)
+func (c *playerServiceClient) GetPlayers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPlayersResponse, error) {
+	out := new(GetPlayersResponse)
 	err := c.cc.Invoke(ctx, "/entityService.PlayerService/GetPlayers", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (c *playerServiceClient) GetPlayer(ctx context.Context, in *GetPlayerReques
 // for forward compatibility
 type PlayerServiceServer interface {
 	CreatePlayer(context.Context, *CreatePlayerRequest) (*Player, error)
-	GetPlayers(context.Context, *emptypb.Empty) (*GetPlayersRequest, error)
+	GetPlayers(context.Context, *emptypb.Empty) (*GetPlayersResponse, error)
 	GetPlayer(context.Context, *GetPlayerRequest) (*Player, error)
 	mustEmbedUnimplementedPlayerServiceServer()
 }
@@ -80,7 +80,7 @@ type UnimplementedPlayerServiceServer struct {
 func (UnimplementedPlayerServiceServer) CreatePlayer(context.Context, *CreatePlayerRequest) (*Player, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePlayer not implemented")
 }
-func (UnimplementedPlayerServiceServer) GetPlayers(context.Context, *emptypb.Empty) (*GetPlayersRequest, error) {
+func (UnimplementedPlayerServiceServer) GetPlayers(context.Context, *emptypb.Empty) (*GetPlayersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPlayers not implemented")
 }
 func (UnimplementedPlayerServiceServer) GetPlayer(context.Context, *GetPlayerRequest) (*Player, error) {
