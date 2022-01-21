@@ -2,14 +2,16 @@ syntax = "proto3";
 package configService;
 option go_package = "github.com/klusoga-org/klusoga-rpg-proto/proto/config";
 
-import "google/protobuf/empty.proto";
-
 message RpgConfigResponse{
   string EntityServiceHost = 1;
   string QuestServiceHost = 2;
   string ShopServiceHost = 3;
 }
 
+message RpgConfigRequest{
+  string InstanceId = 1;
+}
+
 service ConfigService{
-  rpc GetRpgConfig (google.protobuf.Empty) returns (RpgConfigResponse);
+  rpc GetRpgConfig (RpgConfigRequest) returns (RpgConfigResponse);
 }

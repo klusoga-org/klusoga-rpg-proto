@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigServiceClient interface {
-	GetRpgConfig(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*RpgConfigResponse, error)
+	GetRpgConfig(ctx context.Context, in *RpgConfigRequest, opts ...grpc.CallOption) (*RpgConfigResponse, error)
 }
 
 type configServiceClient struct {
@@ -34,7 +33,7 @@ func NewConfigServiceClient(cc grpc.ClientConnInterface) ConfigServiceClient {
 	return &configServiceClient{cc}
 }
 
-func (c *configServiceClient) GetRpgConfig(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*RpgConfigResponse, error) {
+func (c *configServiceClient) GetRpgConfig(ctx context.Context, in *RpgConfigRequest, opts ...grpc.CallOption) (*RpgConfigResponse, error) {
 	out := new(RpgConfigResponse)
 	err := c.cc.Invoke(ctx, "/configService.ConfigService/GetRpgConfig", in, out, opts...)
 	if err != nil {
@@ -47,7 +46,7 @@ func (c *configServiceClient) GetRpgConfig(ctx context.Context, in *emptypb.Empt
 // All implementations must embed UnimplementedConfigServiceServer
 // for forward compatibility
 type ConfigServiceServer interface {
-	GetRpgConfig(context.Context, *emptypb.Empty) (*RpgConfigResponse, error)
+	GetRpgConfig(context.Context, *RpgConfigRequest) (*RpgConfigResponse, error)
 	mustEmbedUnimplementedConfigServiceServer()
 }
 
@@ -55,7 +54,7 @@ type ConfigServiceServer interface {
 type UnimplementedConfigServiceServer struct {
 }
 
-func (UnimplementedConfigServiceServer) GetRpgConfig(context.Context, *emptypb.Empty) (*RpgConfigResponse, error) {
+func (UnimplementedConfigServiceServer) GetRpgConfig(context.Context, *RpgConfigRequest) (*RpgConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRpgConfig not implemented")
 }
 func (UnimplementedConfigServiceServer) mustEmbedUnimplementedConfigServiceServer() {}
@@ -72,7 +71,7 @@ func RegisterConfigServiceServer(s grpc.ServiceRegistrar, srv ConfigServiceServe
 }
 
 func _ConfigService_GetRpgConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(RpgConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -84,7 +83,7 @@ func _ConfigService_GetRpgConfig_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/configService.ConfigService/GetRpgConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigServiceServer).GetRpgConfig(ctx, req.(*emptypb.Empty))
+		return srv.(ConfigServiceServer).GetRpgConfig(ctx, req.(*RpgConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
