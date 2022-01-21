@@ -26,6 +26,7 @@ type PlayerServiceClient interface {
 	CreatePlayer(ctx context.Context, in *CreatePlayerRequest, opts ...grpc.CallOption) (*Player, error)
 	GetPlayers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPlayersResponse, error)
 	GetPlayer(ctx context.Context, in *GetPlayerRequest, opts ...grpc.CallOption) (*Player, error)
+	DeletePlayer(ctx context.Context, in *GetPlayerRequest, opts ...grpc.CallOption) (*Player, error)
 }
 
 type playerServiceClient struct {
@@ -63,6 +64,15 @@ func (c *playerServiceClient) GetPlayer(ctx context.Context, in *GetPlayerReques
 	return out, nil
 }
 
+func (c *playerServiceClient) DeletePlayer(ctx context.Context, in *GetPlayerRequest, opts ...grpc.CallOption) (*Player, error) {
+	out := new(Player)
+	err := c.cc.Invoke(ctx, "/entityService.PlayerService/DeletePlayer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlayerServiceServer is the server API for PlayerService service.
 // All implementations must embed UnimplementedPlayerServiceServer
 // for forward compatibility
@@ -70,6 +80,7 @@ type PlayerServiceServer interface {
 	CreatePlayer(context.Context, *CreatePlayerRequest) (*Player, error)
 	GetPlayers(context.Context, *emptypb.Empty) (*GetPlayersResponse, error)
 	GetPlayer(context.Context, *GetPlayerRequest) (*Player, error)
+	DeletePlayer(context.Context, *GetPlayerRequest) (*Player, error)
 	mustEmbedUnimplementedPlayerServiceServer()
 }
 
@@ -85,6 +96,9 @@ func (UnimplementedPlayerServiceServer) GetPlayers(context.Context, *emptypb.Emp
 }
 func (UnimplementedPlayerServiceServer) GetPlayer(context.Context, *GetPlayerRequest) (*Player, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPlayer not implemented")
+}
+func (UnimplementedPlayerServiceServer) DeletePlayer(context.Context, *GetPlayerRequest) (*Player, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePlayer not implemented")
 }
 func (UnimplementedPlayerServiceServer) mustEmbedUnimplementedPlayerServiceServer() {}
 
@@ -153,6 +167,24 @@ func _PlayerService_GetPlayer_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlayerService_DeletePlayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPlayerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlayerServiceServer).DeletePlayer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.PlayerService/DeletePlayer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlayerServiceServer).DeletePlayer(ctx, req.(*GetPlayerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlayerService_ServiceDesc is the grpc.ServiceDesc for PlayerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -171,6 +203,398 @@ var PlayerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPlayer",
 			Handler:    _PlayerService_GetPlayer_Handler,
+		},
+		{
+			MethodName: "DeletePlayer",
+			Handler:    _PlayerService_DeletePlayer_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/entity/entityService.proto",
+}
+
+// ItemServiceClient is the client API for ItemService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ItemServiceClient interface {
+	CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*Item, error)
+	GetItems(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetItemsResponse, error)
+	GetItem(ctx context.Context, in *GetItemRequest, opts ...grpc.CallOption) (*Item, error)
+	DeleteItem(ctx context.Context, in *GetItemRequest, opts ...grpc.CallOption) (*Item, error)
+}
+
+type itemServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewItemServiceClient(cc grpc.ClientConnInterface) ItemServiceClient {
+	return &itemServiceClient{cc}
+}
+
+func (c *itemServiceClient) CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*Item, error) {
+	out := new(Item)
+	err := c.cc.Invoke(ctx, "/entityService.ItemService/CreateItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) GetItems(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetItemsResponse, error) {
+	out := new(GetItemsResponse)
+	err := c.cc.Invoke(ctx, "/entityService.ItemService/GetItems", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) GetItem(ctx context.Context, in *GetItemRequest, opts ...grpc.CallOption) (*Item, error) {
+	out := new(Item)
+	err := c.cc.Invoke(ctx, "/entityService.ItemService/GetItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) DeleteItem(ctx context.Context, in *GetItemRequest, opts ...grpc.CallOption) (*Item, error) {
+	out := new(Item)
+	err := c.cc.Invoke(ctx, "/entityService.ItemService/DeleteItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ItemServiceServer is the server API for ItemService service.
+// All implementations must embed UnimplementedItemServiceServer
+// for forward compatibility
+type ItemServiceServer interface {
+	CreateItem(context.Context, *CreateItemRequest) (*Item, error)
+	GetItems(context.Context, *emptypb.Empty) (*GetItemsResponse, error)
+	GetItem(context.Context, *GetItemRequest) (*Item, error)
+	DeleteItem(context.Context, *GetItemRequest) (*Item, error)
+	mustEmbedUnimplementedItemServiceServer()
+}
+
+// UnimplementedItemServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedItemServiceServer struct {
+}
+
+func (UnimplementedItemServiceServer) CreateItem(context.Context, *CreateItemRequest) (*Item, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateItem not implemented")
+}
+func (UnimplementedItemServiceServer) GetItems(context.Context, *emptypb.Empty) (*GetItemsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetItems not implemented")
+}
+func (UnimplementedItemServiceServer) GetItem(context.Context, *GetItemRequest) (*Item, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetItem not implemented")
+}
+func (UnimplementedItemServiceServer) DeleteItem(context.Context, *GetItemRequest) (*Item, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteItem not implemented")
+}
+func (UnimplementedItemServiceServer) mustEmbedUnimplementedItemServiceServer() {}
+
+// UnsafeItemServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ItemServiceServer will
+// result in compilation errors.
+type UnsafeItemServiceServer interface {
+	mustEmbedUnimplementedItemServiceServer()
+}
+
+func RegisterItemServiceServer(s grpc.ServiceRegistrar, srv ItemServiceServer) {
+	s.RegisterService(&ItemService_ServiceDesc, srv)
+}
+
+func _ItemService_CreateItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).CreateItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.ItemService/CreateItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).CreateItem(ctx, req.(*CreateItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_GetItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).GetItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.ItemService/GetItems",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).GetItems(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_GetItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).GetItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.ItemService/GetItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).GetItem(ctx, req.(*GetItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_DeleteItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).DeleteItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.ItemService/DeleteItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).DeleteItem(ctx, req.(*GetItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ItemService_ServiceDesc is the grpc.ServiceDesc for ItemService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ItemService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "entityService.ItemService",
+	HandlerType: (*ItemServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateItem",
+			Handler:    _ItemService_CreateItem_Handler,
+		},
+		{
+			MethodName: "GetItems",
+			Handler:    _ItemService_GetItems_Handler,
+		},
+		{
+			MethodName: "GetItem",
+			Handler:    _ItemService_GetItem_Handler,
+		},
+		{
+			MethodName: "DeleteItem",
+			Handler:    _ItemService_DeleteItem_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/entity/entityService.proto",
+}
+
+// MobServiceClient is the client API for MobService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type MobServiceClient interface {
+	CreateMob(ctx context.Context, in *CreateMobRequest, opts ...grpc.CallOption) (*Mob, error)
+	GetMobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMobsResponse, error)
+	GetMob(ctx context.Context, in *GetMobRequest, opts ...grpc.CallOption) (*Mob, error)
+	DeleteMob(ctx context.Context, in *GetMobRequest, opts ...grpc.CallOption) (*Mob, error)
+}
+
+type mobServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewMobServiceClient(cc grpc.ClientConnInterface) MobServiceClient {
+	return &mobServiceClient{cc}
+}
+
+func (c *mobServiceClient) CreateMob(ctx context.Context, in *CreateMobRequest, opts ...grpc.CallOption) (*Mob, error) {
+	out := new(Mob)
+	err := c.cc.Invoke(ctx, "/entityService.MobService/CreateMob", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mobServiceClient) GetMobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMobsResponse, error) {
+	out := new(GetMobsResponse)
+	err := c.cc.Invoke(ctx, "/entityService.MobService/GetMobs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mobServiceClient) GetMob(ctx context.Context, in *GetMobRequest, opts ...grpc.CallOption) (*Mob, error) {
+	out := new(Mob)
+	err := c.cc.Invoke(ctx, "/entityService.MobService/GetMob", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mobServiceClient) DeleteMob(ctx context.Context, in *GetMobRequest, opts ...grpc.CallOption) (*Mob, error) {
+	out := new(Mob)
+	err := c.cc.Invoke(ctx, "/entityService.MobService/DeleteMob", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// MobServiceServer is the server API for MobService service.
+// All implementations must embed UnimplementedMobServiceServer
+// for forward compatibility
+type MobServiceServer interface {
+	CreateMob(context.Context, *CreateMobRequest) (*Mob, error)
+	GetMobs(context.Context, *emptypb.Empty) (*GetMobsResponse, error)
+	GetMob(context.Context, *GetMobRequest) (*Mob, error)
+	DeleteMob(context.Context, *GetMobRequest) (*Mob, error)
+	mustEmbedUnimplementedMobServiceServer()
+}
+
+// UnimplementedMobServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedMobServiceServer struct {
+}
+
+func (UnimplementedMobServiceServer) CreateMob(context.Context, *CreateMobRequest) (*Mob, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMob not implemented")
+}
+func (UnimplementedMobServiceServer) GetMobs(context.Context, *emptypb.Empty) (*GetMobsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMobs not implemented")
+}
+func (UnimplementedMobServiceServer) GetMob(context.Context, *GetMobRequest) (*Mob, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMob not implemented")
+}
+func (UnimplementedMobServiceServer) DeleteMob(context.Context, *GetMobRequest) (*Mob, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMob not implemented")
+}
+func (UnimplementedMobServiceServer) mustEmbedUnimplementedMobServiceServer() {}
+
+// UnsafeMobServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MobServiceServer will
+// result in compilation errors.
+type UnsafeMobServiceServer interface {
+	mustEmbedUnimplementedMobServiceServer()
+}
+
+func RegisterMobServiceServer(s grpc.ServiceRegistrar, srv MobServiceServer) {
+	s.RegisterService(&MobService_ServiceDesc, srv)
+}
+
+func _MobService_CreateMob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MobServiceServer).CreateMob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.MobService/CreateMob",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MobServiceServer).CreateMob(ctx, req.(*CreateMobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MobService_GetMobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MobServiceServer).GetMobs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.MobService/GetMobs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MobServiceServer).GetMobs(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MobService_GetMob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MobServiceServer).GetMob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.MobService/GetMob",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MobServiceServer).GetMob(ctx, req.(*GetMobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MobService_DeleteMob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MobServiceServer).DeleteMob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/entityService.MobService/DeleteMob",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MobServiceServer).DeleteMob(ctx, req.(*GetMobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// MobService_ServiceDesc is the grpc.ServiceDesc for MobService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var MobService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "entityService.MobService",
+	HandlerType: (*MobServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateMob",
+			Handler:    _MobService_CreateMob_Handler,
+		},
+		{
+			MethodName: "GetMobs",
+			Handler:    _MobService_GetMobs_Handler,
+		},
+		{
+			MethodName: "GetMob",
+			Handler:    _MobService_GetMob_Handler,
+		},
+		{
+			MethodName: "DeleteMob",
+			Handler:    _MobService_DeleteMob_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

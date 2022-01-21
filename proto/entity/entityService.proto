@@ -39,4 +39,61 @@ service PlayerService{
   rpc CreatePlayer (CreatePlayerRequest) returns (Player);
   rpc GetPlayers (google.protobuf.Empty) returns (GetPlayersResponse);
   rpc GetPlayer (GetPlayerRequest) returns (Player);
+  rpc DeletePlayer (GetPlayerRequest) returns (Player);
+}
+
+message Item {
+  uint64 Id = 1;
+  string Name = 2;
+  uint32 Value = 3;
+}
+
+message CreateItemRequest{
+  string Name = 1;
+  uint32 Value = 2;
+}
+
+message GetItemRequest{
+  uint64 Id = 1;
+}
+
+message GetItemsResponse{
+  repeated Player Players = 1;
+}
+
+service ItemService{
+  rpc CreateItem(CreateItemRequest) returns (Item);
+  rpc GetItems(google.protobuf.Empty) returns (GetItemsResponse);
+  rpc GetItem(GetItemRequest) returns (Item);
+  rpc DeleteItem(GetItemRequest) returns (Item);
+}
+
+message Mob{
+  uint64 Id = 1;
+  string Name = 2;
+  uint32 KillExp = 3;
+  uint32 AttackDamage = 4;
+  uint32 Health = 5;
+}
+
+message CreateMobRequest{
+  string Name = 2;
+  uint32 KillExp = 3;
+  uint32 AttackDamage = 4;
+  uint32 Health = 5;
+}
+
+message GetMobRequest{
+  uint64 Id = 1;
+}
+
+message GetMobsResponse{
+  repeated Mob Mobs = 1;
+}
+
+service MobService{
+  rpc CreateMob(CreateMobRequest) returns (Mob);
+  rpc GetMobs(google.protobuf.Empty) returns (GetMobsResponse);
+  rpc GetMob(GetMobRequest) returns (Mob);
+  rpc DeleteMob(GetMobRequest) returns (Mob);
 }
