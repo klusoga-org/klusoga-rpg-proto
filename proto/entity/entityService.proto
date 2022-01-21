@@ -58,7 +58,7 @@ message GetItemRequest{
 }
 
 message GetItemsResponse{
-  repeated Player Players = 1;
+  repeated Item Items = 1;
 }
 
 service ItemService{
