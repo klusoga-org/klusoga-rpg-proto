@@ -4,6 +4,17 @@ option go_package = "github.com/klusoga-org/klusoga-rpg-proto/proto/entity";
 
 import "google/protobuf/empty.proto";
 
+enum SortOrder{
+  Asc = 0;
+  Desc = 1;
+}
+
+message Pagination{
+  optional int32 Count = 2;
+  optional int32 Page = 3;
+  optional SortOrder SortOrder = 4;
+}
+
 message Player{
   string Id = 1;
   string Name = 2;
@@ -15,6 +26,7 @@ message Player{
   uint64 TotalKills = 8;
   string CreatedAt = 9;
   string EditedAt = 10;
+  string TeamId = 11;
 }
 
 message CreatePlayerRequest{
@@ -25,6 +37,7 @@ message CreatePlayerRequest{
   uint64 Coins = 5;
   float AttackDamage = 6;
   float Defense = 7;
+  string TeamId = 8;
 }
 
 message GetPlayersResponse{
@@ -33,6 +46,7 @@ message GetPlayersResponse{
 
 message GetPlayerRequest{
   string Id = 1;
+  optional Pagination Pagination = 2;
 }
 
 service PlayerService{
@@ -46,11 +60,13 @@ message Item {
   uint64 Id = 1;
   string Name = 2;
   uint32 Value = 3;
+  string TeamId = 4;
 }
 
 message CreateItemRequest{
   string Name = 1;
   uint32 Value = 2;
+  string TeamId = 4;
 }
 
 message GetItemRequest{
@@ -59,6 +75,7 @@ message GetItemRequest{
 
 message GetItemsResponse{
   repeated Item Items = 1;
+  optional Pagination Pagination = 2;
 }
 
 service ItemService{
@@ -74,6 +91,7 @@ message Mob{
   uint32 KillExp = 3;
   uint32 AttackDamage = 4;
   uint32 Health = 5;
+  string TeamId = 6;
 }
 
 message CreateMobRequest{
@@ -81,10 +99,12 @@ message CreateMobRequest{
   uint32 KillExp = 3;
   uint32 AttackDamage = 4;
   uint32 Health = 5;
+  string TeamId = 6;
 }
 
 message GetMobRequest{
   uint64 Id = 1;
+  optional Pagination Pagination = 2;
 }
 
 message GetMobsResponse{
